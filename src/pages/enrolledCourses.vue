@@ -31,7 +31,7 @@ export default defineComponent({
     const route = useRoute()
     const enrolledCourses = ref(Array<iCourse>())
 
-    let studentSearchInput = ref('')
+    const studentSearchInput = ref('')
     const courseSearchInput = ref('')
 
     const fetchEnrolledCourses = async (routeQuery: iRouteQuery) => {
@@ -47,6 +47,10 @@ export default defineComponent({
       await fetchEnrolledCourses(route.query)
     })
 
+    /** STUDENT */
+    const studentParam = computed(() => route.query?.student ?? '')
+
+    /** STUDENT */
     watch(
       () => studentSearchInput.value,
       async (newStudentSearchInput) => {
@@ -63,8 +67,7 @@ export default defineComponent({
       }
     )
 
-    const studentParam = computed(() => route.query?.student ?? '')
-
+    /** STUDENT */
     watch(
       () => studentParam.value,
       async (newStudentRouterValue) => {
@@ -76,6 +79,38 @@ export default defineComponent({
       },
       {
         immediate: true,
+      }
+    )
+
+    /** COURSE */
+    const courseParam = computed(() => route.query?.course ?? '')
+
+    /** COURSE */
+    watch(
+      () => courseSearchInput.value,
+      async (newCourseSearchInput) => {
+        router.push({
+          path: '/enrolled-courses',
+          query: {
+            ...route.query,
+            course: newCourseSearchInput,
+          },
+        })
+      },
+      {
+        immediate: true,
+      }
+    )
+
+    /** COURSE */
+    watch(
+      () => courseParam.value,
+      async (newCourseRouterValue) => {
+        if (courseSearchInput.value !== newCourseRouterValue) {
+          studentSearchInput.value = newCourseRouterValue as string
+        }
+        await nextTick()
+        await fetchEnrolledCourses(route.query)
       }
     )
 
