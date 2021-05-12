@@ -6,7 +6,6 @@
           >Course has already been enrolled in this semester. Nothing changed.</span
         ><span v-if="showSuccessEnrollMessage" class="text-green-700">Course enrolled</span>&nbsp;
         <div class="max-w-3xl mx-auto space-x-4 lg:max-w-7xl lg:grid grid-cols-12 pb-4">
-          <!-- <div class="hidden lg:block lg:col-span-3 xl:col-span-2 bg-yellow-200"></div> -->
           <div class="col-span-6">
             <h2 class="text-lg font-medium text-gray-900">Student Directory</h2>
             <div class="text-sm text-gray-500">
@@ -61,13 +60,8 @@
           </div>
         </div>
       </div>
-      <!-- TODO #rm -->
-      <!-- <div class="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8        showWasAlreadyEnrolledError.value = false lg:grid lg:grid-cols-12 lg:gap-8"> -->
       <div class="max-w-3xl mx-auto space-x-4 lg:max-w-7xl lg:grid grid-cols-12">
-        <!-- <div class="hidden lg:block lg:col-span-3 xl:col-span-2 bg-yellow-200"></div> -->
         <div class="col-span-6">
-          <!-- <h2 class="text-lg font-medium text-gray-900">Directory</h2>
-          <p class="mt-1 text-sm text-gray-600 pb-4">Search directory of students</p> -->
           <div class="space-y-4">
             <search-input v-model="studentSearchInput" />
             <student-select-table
@@ -78,8 +72,6 @@
           </div>
         </div>
         <div class="col-span-6">
-          <!-- <h2 class="text-lg font-medium text-gray-900">Available Courses</h2>
-          <p class="mt-1 text-sm text-gray-600 pb-4">Search directory of Courses</p> -->
           <div class="space-y-4">
             <search-input v-model="courseSearchInput" />
             <select-course-table
