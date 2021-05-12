@@ -1,4 +1,4 @@
-import { iStudent } from '../interfaces/interfaces'
+import { iStudent, iEnrolledCourse } from '../interfaces/interfaces'
 
 export interface State {
   debug: boolean
@@ -6,8 +6,7 @@ export interface State {
   isInitialized: boolean
   count: number
   students: Array<iStudent>
-  // TODO #fix
-  enrolledCourses: Array<any>
+  enrolledCourses: Array<iEnrolledCourse>
 }
 
 const versionString = import.meta.env.MODE === 'development' ? _APP_VERSION + '-dev' : _APP_VERSION

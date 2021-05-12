@@ -1,13 +1,8 @@
-// TODO #rm
-// export default { 
-//   '/': 'Home', 
-//   '/students': 'Students'
-// }
-
 import { createWebHistory, createRouter } from 'vue-router'
 import Students from '../pages/students.vue'
 import AddStudent from '../pages/addStudent.vue'
 import EnrolledCourses from '../pages/enrolledCourses.vue'
+import AddCourse from '../pages/addCourse.vue'
 
 const history = createWebHistory();
 const router = createRouter({
@@ -16,6 +11,10 @@ const router = createRouter({
     {
       path: '/add-student',
       component: AddStudent,
+    },
+    {
+      path: '/add-course',
+      component: AddCourse,
     },
     {
       path: '/enrolled-courses',

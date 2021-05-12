@@ -339,6 +339,11 @@ export default defineComponent({
         name: 'Enrolled Courses',
         path: 'enrolled-courses',
       },
+      {
+        id: 4,
+        name: 'Add Course',
+        path: 'add-course',
+      },
     ])
 
     return {

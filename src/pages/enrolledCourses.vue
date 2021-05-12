@@ -1,12 +1,11 @@
 <template>
   <div>
-    <search-input class="pb-4" v-model="studentSearchInput" placeholder="Taysom Ling" />
-    <search-input class="pb-4" v-model="courseSearchInput" placeholder="Intro to programming" />
+    <search-input
+      class="pb-4"
+      v-model="combinedSearchInput"
+      placeholder="Course plus student search"
+    />
     <enrolled-courses-table :modelValue="enrolledCourses" />
-    <!-- TODO #rm final -->
-    <pre class="prose">
-      {{ enrolledCourses }}
-    </pre>
   </div>
 </template>
 <script lang="ts">
@@ -15,10 +14,10 @@ import EnrolledCoursesTable from '../components/enrolled-courses/EnrolledCourses
 import SearchInput from '../components/SearchInput.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { axios } from '../plugins/request'
-import { iCourse } from '../interfaces/interfaces'
+import { iEnrolledCourse } from '../interfaces/interfaces'
 
 interface iRouteQuery {
-  student?: string
+  combinedQuery?: string
 }
 
 export default defineComponent({
@@ -29,10 +28,9 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const enrolledCourses = ref(Array<iCourse>())
+    const enrolledCourses = ref(Array<iEnrolledCourse>())
 
-    const studentSearchInput = ref('')
-    const courseSearchInput = ref('')
+    const combinedSearchInput = ref('')
 
     const fetchEnrolledCourses = async (routeQuery: iRouteQuery) => {
       const response = await axios.post('enrolled-courses', JSON.stringify({ ...routeQuery }), {
@@ -40,25 +38,24 @@ export default defineComponent({
           'Content-Type': 'application/json',
         },
       })
-      enrolledCourses.value = response.data as Array<iCourse>
+      enrolledCourses.value = response.data as Array<iEnrolledCourse>
     }
 
     onMounted(async () => {
       await fetchEnrolledCourses(route.query)
     })
 
-    /** STUDENT */
-    const studentParam = computed(() => route.query?.student ?? '')
+    /** COMBINED */
+    const combinedQueryParam = computed(() => route.query?.combinedQuery ?? '')
 
-    /** STUDENT */
+    /** COMBINED */
     watch(
-      () => studentSearchInput.value,
-      async (newStudentSearchInput) => {
+      () => combinedSearchInput.value,
+      async (newCombinedSearchInput) => {
         router.push({
           path: '/enrolled-courses',
           query: {
-            ...route.query,
-            student: newStudentSearchInput,
+            combinedQuery: newCombinedSearchInput,
           },
         })
       },
@@ -69,57 +66,24 @@ export default defineComponent({
 
     /** STUDENT */
     watch(
-      () => studentParam.value,
-      async (newStudentRouterValue) => {
-        if (studentSearchInput.value !== newStudentRouterValue) {
-          studentSearchInput.value = newStudentRouterValue as string
+      () => combinedQueryParam.value,
+      async (newCombinedQueryRouterValue) => {
+        if (combinedSearchInput.value !== newCombinedQueryRouterValue) {
+          combinedSearchInput.value = newCombinedQueryRouterValue as string
         }
         await nextTick()
         await fetchEnrolledCourses(route.query)
       },
       {
         immediate: true,
-      }
-    )
-
-    /** COURSE */
-    const courseParam = computed(() => route.query?.course ?? '')
-
-    /** COURSE */
-    watch(
-      () => courseSearchInput.value,
-      async (newCourseSearchInput) => {
-        router.push({
-          path: '/enrolled-courses',
-          query: {
-            ...route.query,
-            course: newCourseSearchInput,
-          },
-        })
-      },
-      {
-        immediate: true,
-      }
-    )
-
-    /** COURSE */
-    watch(
-      () => courseParam.value,
-      async (newCourseRouterValue) => {
-        if (courseSearchInput.value !== newCourseRouterValue) {
-          studentSearchInput.value = newCourseRouterValue as string
-        }
-        await nextTick()
-        await fetchEnrolledCourses(route.query)
       }
     )
 
     return {
-      studentSearchInput,
+      combinedSearchInput,
       enrolledCourses,
-      courseSearchInput,
       fetchEnrolledCourses,
-      studentParam,
+      combinedQueryParam,
     }
   },
 })
